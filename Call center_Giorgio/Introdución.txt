@@ -1,9 +1,0 @@
-Introducción
-Nos situaremos en un call center el cual tiene que ordenar los diferentes repositorios de informacíón para el calculo de sus métricas.
-Objetivo
-Buscar una solución optima para el control y el manejo de los volumenes de datos extraidos de las diferentes herramientas como el control de las horas trabajadas por los empleados para la posterior facturación a los diferentes clientes.
-Situación problemática
-Actualmente la empresa no solo no posee la informacíón en un repositorio que le permita consultarla, sino que los diferentes controles se realizar en sistemas antiguos como lo es excel.
-Esto da lugar numerosos errores como por ejemplo accesos no permitidos, modificaciones por errores de los usuarios, borrado de información util, entre otras.
-Esta implementación permitira posee un reporsitorio de información ordenado y confiable generando no solo la posible automatización de calculos y/o reportes, si tambien la posibilidad de ahorro en el espacio de los servidores.
-
