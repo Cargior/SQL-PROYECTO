@@ -79,10 +79,3 @@
 
 ---
 
-## 🔗 Relaciones entre Tablas
-
-- `Nomina.usuario` → `Conexiones_al_sistema.usuario`
-- `Nomina.servicio` → `Conexiones_al_sistema.servicio`, `Planificado.servicio`, `Requerido.servicio`, `Requerido_servicio.servicio`
-- `Nomina.legajo` → `Justificados.legajo`
-
----
