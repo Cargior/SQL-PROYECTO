@@ -73,7 +73,7 @@
 
 | Columna           | Tipo de Dato   | Clave     | Descripción                          |
 |-------------------|----------------|-----------|--------------------------------------|
-| `SERVICIO`        | VARCHAR(100)   |           | Referencia a `Nomina.servicio`       |
+| `SERVICIO`        | VARCHAR(100)   |   PK      | Referencia a `Nomina.servicio`       |
 | `PISO`            | VARCHAR(50)    |           | Piso asignado                        |
 | `Q__PA_ASIGNADAS` | INT            |           | Cantidad de personas asignadas       |
 
