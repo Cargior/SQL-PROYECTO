@@ -48,7 +48,7 @@ CREATE TABLE Requerido (
     FOREIGN KEY (SERVICIO) REFERENCES Servicios(servicio)
 );
 
--- Tabla: Requerido_servicio
+-- Tabla: lay_out
 CREATE TABLE lay_out (
     SERVICIO VARCHAR(100) PRIMARY KEY,
     PISO VARCHAR(50) NOT NULL,
