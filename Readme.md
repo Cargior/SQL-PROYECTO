@@ -69,7 +69,7 @@
 
 ---
 
-### 📄 Tabla: `Requerido_servicio`
+### 📄 Tabla: `Lay out`
 
 | Columna           | Tipo de Dato   | Clave     | Descripción                          |
 |-------------------|----------------|-----------|--------------------------------------|
