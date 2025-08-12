@@ -48,10 +48,19 @@ CREATE TABLE Requerido (
     FOREIGN KEY (SERVICIO) REFERENCES Servicios(servicio)
 );
 
--- Tabla: lay_out
+-- Tabla: Requerido_servicio
 CREATE TABLE lay_out (
     SERVICIO VARCHAR(100) PRIMARY KEY,
     PISO VARCHAR(50) NOT NULL,
     Q__PA_ASIGNADAS INT NOT NULL,
     FOREIGN KEY (SERVICIO) REFERENCES Servicios(servicio)
+);
+
+-- Tabla: Justificados (modificada)
+CREATE TABLE Justificados (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    Legajo INT NOT NULL,
+    Fecha DATE NOT NULL,
+    Motivo_Ausencia VARCHAR(100) NOT NULL,
+    FOREIGN KEY (Legajo) REFERENCES Nomina(Legajo)
 );
