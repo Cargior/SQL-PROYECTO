@@ -1,7 +1,7 @@
 # 📘 Documentación de la Base de Datos
 
 ## 🗂 Nombre de la Base de Datos
-`gestion_nomina`
+`CGestor de presentismo`
 
 ---
 
@@ -85,3 +85,8 @@
 - `Nomina.servicio` → `Conexiones_al_sistema.servicio`, `Planificado.servicio`, `Requerido.servicio`, `Requerido_servicio.servicio`
 - `Nomina.legajo` → `Justificados.legajo`
 
+---
+
+## 🧭 Diagrama Entidad-Relación (ERD)
+
+![Diagrama ERD](sandbox:/mnt/data/erd_diagram.png)
