@@ -145,6 +145,8 @@ Registra la cantidad de minutos conectados por usuario, servicio y franja horari
 🔐 Clave primaria compuesta: `(usuario, fecha, franja_inicio, servicio)`  
 🔗 FK: `servicio → Servicios(servicio)`
 
+## 🧱 Store procedure
+
 ⚙️ Procedimiento Almacenado: sp_generar_horas_por_franja
 Este procedimiento divide las sesiones de conexión de los empleados en franjas de 30 minutos y registra los minutos conectados por usuario, servicio y franja horaria en la tabla horas_por_franja.
 
