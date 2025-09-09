@@ -124,4 +124,24 @@ VALUES
 (23203, 'u402299', 'ACTIVO ON SITE', '2024/12/23', '2024/12/23', '15:00:00', '21:00:00', 'Domingo', 'Martes', 'RETENCION CABLE', ''),
 (22853, 'u401134', 'ACTIVO ON SITE', '2024/11/07', '2024/11/07', '15:00:00', '21:00:00', 'Sábado', 'Domingo', 'RETENCION CABLE', 'nicarbajal@cat-technologies.com'),
 (22858, 'u401139', 'ACTIVO ON SITE', '2024/11/07', '2024/11/07', '15:00:00', '21:00:00', 'Sábado', 'Domingo', 'RETENCION CABLE', 'rslopez@cat-technologies.com'),
-(22862, 'u401143', 'ACTIVO TELETRABAJO', '2024/11/07', '2024/11/07', '16:00:00', '22:00:00', 'Sábado', 'Domingo', 'RETENCION CABLE', 'mamenalled@cat-technologies.com');
+(22862, 'u401143', 'ACTIVO TELETRABAJO', '2024/11/07', '2024/11/07', '16:00:00', '22:00:00', 'Sábado', 'Domingo', 'RETENCION CABLE', 'mamenalled@cat-technologies.com'),
+(22930,'u401401','ACTIVO ON SITE','2024-11-25','2024-11-25','08:00:00','14:00:00','Sábado','Domingo','RETENCION CABLE','cbalda@cat-technologies.com'),
+(22913,'u401332','ACTIVO ON SITE','2024-11-24','2024-11-24','15:00:00','21:00:00','Lunes','Viernes','RETENCION CABLE','wdgutierrez@cat-technologies.com'),
+(22915,'u401334','ACTIVO TELETRABAJO','2024-11-24','2024-11-24','16:00:00','22:00:00','Lunes','Viernes','RETENCION CABLE','cmapaza@cat-technologies.com'),
+(22919,'u401338','ACTIVO ON SITE','2024-11-24','2024-11-24','15:00:00','21:00:00','Lunes','Viernes','RETENCION CABLE','sgfuentes@cat-technologies.com'),
+(22622,'u400345','ACTIVO ON SITE','2024-09-11','2024-09-11','08:00:00','14:00:00','Sábado','Domingo','RETENCION CABLE','camagan@cat-technologies.com'),
+(23319,'u403012','ACTIVO ON SITE','2025-01-21','2025-01-21','08:00:00','14:00:00','Sábado','Domingo','RETENCION CABLE','svjuarez@cat-technologies.com'),
+(23551,'U403568','ACTIVO ON SITE','2025-02-12','2025-02-12','09:00:00','15:00:00','Sábado','Domingo','RETENCION CABLE','svjuarez@cat-technologies.com'),
+(23569,'U403586','ACTIVO TELETRABAJO','2025-02-12','2025-02-12','16:00:00','22:00:00','Sábado','Domingo','RETENCION CABLE','svjuarez@cat-technologies.com'),
+(23553,'U403570','ACTIVO ON SITE','2025-02-12','2025-02-12','08:00:00','14:00:00','Sábado','Domingo','RETENCION CABLE','svjuarez@cat-technologies.com'),
+(23848,'u405126','ACTIVO ON SITE','2025-06-17','2025-06-17','09:00:00','15:00:00','Jueves','Viernes','RETENCION CABLE','aamontenegro@cat-technologies.com'),
+(23849,'u405127','ACTIVO ON SITE','2025-06-17','2025-06-17','08:00:00','14:00:00','Jueves','Viernes','RETENCION CABLE','effiguere@cat-technologies.com'),
+(23852,'u405130','ACTIVO ON SITE','2025-06-17','2025-06-17','16:00:00','22:00:00','Jueves','Viernes','RETENCION CABLE','arsilva@cat-technologies.com'),
+(23854,'u405132','ACTIVO ON SITE','2025-06-17','2025-06-17','16:00:00','22:00:00','Jueves','Viernes','RETENCION CABLE','rfmacias@cat-technologies.com'),
+(23905,'u405397','ACTIVO ON SITE','2025-07-03','2025-07-03','15:00:00','21:00:00','Domingo','Lunes','RETENCION CABLE','lfarfaro@cat-technologies.com'),
+(23906,'u405398','ACTIVO ON SITE','2025-07-03','2025-07-03','15:00:00','21:00:00','Domingo','Lunes','RETENCION CABLE','zlsperanza@cat-technologies.com'),
+(23909,'u405401','ACTIVO ON SITE','2025-07-03','2025-07-03','16:00:00','22:00:00','Domingo','martes','RETENCION CABLE','ftvargas@cat-technologies.com'),
+(23910,'u405402','ACTIVO ON SITE','2025-07-03','2025-07-03','16:00:00','22:00:00','Domingo','Miércoles','RETENCION CABLE','daaguero@cat-technologies.com'),
+(23912,'u405404','ACTIVO ON SITE','2025-07-03','2025-07-03','16:00:00','22:00:00','Domingo','Miércoles','RETENCION CABLE','lgrios@cat-technologies.com');
+-- carga de tabla conexiones al sistema --
+-- Se adjunta CVS en GITHUB--
