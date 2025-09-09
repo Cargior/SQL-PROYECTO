@@ -23,82 +23,108 @@ Este esquema gestiona información de empleados, sus conexiones al sistema, ause
 
 ---
 
-##🧑‍💼 Tabla: Nomina
+## 🧑‍💼 Tabla: Nomina
 Contiene los datos principales de cada empleado.
 
-Columna	Tipo	Descripción
-Legajo	INT	Identificador único del empleado (PK)
-usuario	VARCHAR(10)	Alias o usuario del sistema (UNIQUE)
-Estado	VARCHAR(100)	Estado laboral
-fecha_ingreso	DATE	Fecha de ingreso al sistema
-fecha_de_alta	DATE	Fecha de alta en el servicio
-hora_ingreso	TIME	Horario de entrada
-hora_egreso	TIME	Horario de salida
-franco_1	VARCHAR(20)	Día de franco principal
-franco_2	VARCHAR(10)	Día de franco secundario
-servicio	VARCHAR(100)	Servicio asignado
-mail	VARCHAR(100)	Correo electrónico
-🔗 FK: servicio → Servicios(servicio)
+| Columna         | Tipo        | Descripción                              |
+|-----------------|-------------|------------------------------------------|
+| Legajo          | INT         | Identificador único del empleado (PK)    |
+| usuario         | VARCHAR(10) | Alias o usuario del sistema (UNIQUE)     |
+| Estado          | VARCHAR(100)| Estado laboral                           |
+| fecha_ingreso   | DATE        | Fecha de ingreso al sistema              |
+| fecha_de_alta   | DATE        | Fecha de alta en el servicio             |
+| hora_ingreso    | TIME        | Horario de entrada                       |
+| hora_egreso     | TIME        | Horario de salida                        |
+| franco_1        | VARCHAR(20) | Día de franco principal                  |
+| franco_2        | VARCHAR(10) | Día de franco secundario                 |
+| servicio        | VARCHAR(100)| Servicio asignado                        |
+| mail            | VARCHAR(100)| Correo electrónico                       |
+
+🔗 FK: servicio → Servicios(servicio)  
 📌 Índices: usuario (UNIQUE), servicio
 
-##🧾 Tabla: Servicios
+---
+
+## 🧾 Tabla: Servicios
 Define los servicios disponibles en la organización.
 
-Columna	Tipo	Descripción
-servicio	VARCHAR(100)	Nombre del servicio (PK)
-🔌 Tabla: Conexiones_al_sistema
+| Columna   | Tipo         | Descripción              |
+|-----------|--------------|--------------------------|
+| servicio  | VARCHAR(100) | Nombre del servicio (PK) |
+
+---
+
+## 🔌 Tabla: Conexiones_al_sistema
 Registra las sesiones de conexión de cada usuario.
 
-Columna	Tipo	Descripción
-id	INT	Identificador único (PK)
-usuario	VARCHAR(10)	Usuario que se conecta
-conexion	DATETIME	Fecha y hora de conexión
-desconexion	DATETIME	Fecha y hora de desconexión
-horas_de_conexion	TIME	Duración total de la sesión
-servicio	VARCHAR(100)	Servicio desde el que se conecta
-🔗 FK: usuario → Nomina(usuario)
+| Columna             | Tipo        | Descripción                         |
+|---------------------|-------------|-------------------------------------|
+| id                  | INT         | Identificador único (PK)            |
+| usuario             | VARCHAR(10) | Usuario que se conecta              |
+| conexion            | DATETIME    | Fecha y hora de conexión            |
+| desconexion         | DATETIME    | Fecha y hora de desconexión         |
+| horas_de_conexion   | TIME        | Duración total de la sesión         |
+| servicio            | VARCHAR(100)| Servicio desde el que se conecta    |
+
+🔗 FK: usuario → Nomina(usuario)  
 📌 Índices: usuario, conexion, servicio
 
-##📆 Tabla: Justificados
+---
+
+## 📆 Tabla: Justificados
 Registra ausencias justificadas por empleado.
 
-Columna	Tipo	Descripción
-id	INT	Identificador único (PK)
-Legajo	INT	Legajo del empleado
-Fecha	DATE	Fecha de la ausencia
-Motivo_Ausencia	VARCHAR(100)	Motivo del justificativo
-🔗 FK: Legajo → Nomina(Legajo)
+| Columna           | Tipo         | Descripción                         |
+|-------------------|--------------|-------------------------------------|
+| id                | INT          | Identificador único (PK)            |
+| Legajo            | INT          | Legajo del empleado                 |
+| Fecha             | DATE         | Fecha de la ausencia                |
+| Motivo_Ausencia   | VARCHAR(100) | Motivo del justificativo            |
+
+🔗 FK: Legajo → Nomina(Legajo)  
 📌 Índices: Legajo, Fecha, Motivo_Ausencia
 
-##📋 Tabla: Planificado
+---
+
+## 📋 Tabla: Planificado
 Define la planificación de personal por servicio y franja horaria.
 
-Columna	Tipo	Descripción
-FECHA	DATE	Fecha de planificación
-FRANJA_HORARIA	TIME	Franja horaria
-SERVICIO	VARCHAR(100)	Servicio planificado
-CANTIDAD_DE_PERSONAS	INT	Cantidad de personas requeridas
-🔗 FK: SERVICIO → Servicios(servicio)
-🔑 PK compuesta: FECHA, FRANJA_HORARIA, SERVICIO
+| Columna               | Tipo        | Descripción                         |
+|-----------------------|-------------|-------------------------------------|
+| FECHA                 | DATE        | Fecha de planificación              |
+| FRANJA_HORARIA        | TIME        | Franja horaria                      |
+| SERVICIO              | VARCHAR(100)| Servicio planificado                |
+| CANTIDAD_DE_PERSONAS  | INT         | Cantidad de personas requeridas     |
+
+🔗 FK: SERVICIO → Servicios(servicio)  
+🔑 PK compuesta: FECHA, FRANJA_HORARIA, SERVICIO  
 📌 Índices: FECHA, SERVICIO
 
-##📌 Tabla: Requerido
+---
+
+## 📌 Tabla: Requerido
 Define los requerimientos reales por servicio y franja horaria.
 
-Columna	Tipo	Descripción
-FECHA	DATE	Fecha del requerimiento
-FRANJA_HORARIA	TIME	Franja horaria
-SERVICIO	VARCHAR(100)	Servicio requerido
-CANTIDAD_DE_PERSONAS	INT	Cantidad de personas necesarias
-🔗 FK: SERVICIO → Servicios(servicio)
-🔑 PK compuesta: FECHA, FRANJA_HORARIA, SERVICIO
+| Columna               | Tipo        | Descripción                         |
+|-----------------------|-------------|-------------------------------------|
+| FECHA                 | DATE        | Fecha del requerimiento             |
+| FRANJA_HORARIA        | TIME        | Franja horaria                      |
+| SERVICIO              | VARCHAR(100)| Servicio requerido                  |
+| CANTIDAD_DE_PERSONAS  | INT         | Cantidad de personas necesarias     |
+
+🔗 FK: SERVICIO → Servicios(servicio)  
+🔑 PK compuesta: FECHA, FRANJA_HORARIA, SERVICIO  
 📌 Índices: FECHA, SERVICIO
 
-##🏢 Tabla: lay_out
+---
+
+## 🏢 Tabla: lay_out
 Define características adicionales por servicio.
 
-Columna	Tipo	Descripción
-SERVICIO	VARCHAR(100)	Servicio (PK)
-PISO	VARCHAR(50)	Piso donde se presta el servicio
-Q__PA_ASIGNADAS	INT	Cantidad de PA asignadas
+| Columna           | Tipo         | Descripción                         |
+|-------------------|--------------|-------------------------------------|
+| SERVICIO          | VARCHAR(100) | Servicio (PK)                       |
+| PISO              | VARCHAR(50)  | Piso donde se presta el servicio    |
+| Q__PA_ASIGNADAS   | INT          | Cantidad de PA asignadas            |
+
 🔗 FK: SERVICIO → Servicios(servicio)
