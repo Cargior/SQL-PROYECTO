@@ -177,3 +177,6 @@ Agrupa los datos de la tabla horas_por_franja por fecha y franja horaria, sumand
 horas_por_franja: contiene los minutos conectados por usuario, servicio, fecha y franja.
 🎯 Objetivo:
 Obtener un resumen total de horas conectadas por franja de 30 minutos y por día, útil para visualizar la ocupación general del call center en unidades más legibles.
+
+🧾 Ejemplo de ejecución:
+select * from vista_total_horas_por_franja;
