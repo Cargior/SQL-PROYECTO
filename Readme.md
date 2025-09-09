@@ -128,3 +128,40 @@ Define características adicionales por servicio.
 | Q__PA_ASIGNADAS   | INT          | Cantidad de PA asignadas            |
 
 🔗 FK: SERVICIO → Servicios(servicio)
+
+
+### 🕒 Tabla: horas_por_franja
+Registra la cantidad de minutos conectados por usuario, servicio y franja horaria.
+
+| Columna            | Tipo         | Descripción                                      |
+|--------------------|--------------|--------------------------------------------------|
+| usuario            | VARCHAR(10)  | Usuario del sistema                              |
+| servicio           | VARCHAR(100) | Servicio asignado (FK → Servicios.servicio)      |
+| fecha              | DATE         | Fecha de la franja                               |
+| franja_inicio      | DATETIME     | Inicio de la franja de 30 minutos                |
+| franja_fin         | DATETIME     | Fin de la franja de 30 minutos                   |
+| minutos_conectados | INT          | Minutos conectados en esa franja (puede ser 0)   |
+
+🔐 Clave primaria compuesta: `(usuario, fecha, franja_inicio, servicio)`  
+🔗 FK: `servicio → Servicios(servicio)`
+
+⚙️ Procedimiento Almacenado: sp_generar_horas_por_franja
+Este procedimiento divide las sesiones de conexión de los empleados en franjas de 30 minutos y registra los minutos conectados por usuario, servicio y franja horaria en la tabla horas_por_franja.
+
+📋 Tablas involucradas:
+Conexiones_al_sistema: contiene los registros de conexión y desconexión por usuario.
+Nomina: se utiliza para validar los usuarios y obtener el servicio asignado.
+horas_por_franja: tabla destino donde se guarda el resumen por franja.
+🎯 Objetivo:
+Generar un resumen por usuario, servicio y franja horaria de 30 minutos, indicando cuántos minutos estuvo conectado en cada una. Si no hubo conexión en una franja, se registra igualmente con 0 minutos, asegurando que cada día tenga 48 franjas por usuario y servicio.
+
+🧠 Lógica:
+Recorre cada fecha con registros en Conexiones_al_sistema.
+Divide el día en 48 franjas de 30 minutos.
+Para cada franja:
+Calcula los minutos conectados por usuario y servicio.
+Inserta los datos en horas_por_franja.
+Si no hubo conexión, inserta el registro con 0 minutos.
+🧾 Ejemplo de ejecución:
+
+CALL sp_generar_horas_por_franja();
