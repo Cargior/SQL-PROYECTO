@@ -259,3 +259,16 @@ GROUP BY fecha, franja_inicio, franja_fin
 ORDER BY fecha, franja_inicio;
 -- ver vista horas por franja --
 select * from vista_total_horas_por_franja;
+
+-- Vista horas por empleados --
+CREATE VIEW vista_total_por_empleado AS
+SELECT
+    fecha,
+    usuario,
+    ROUND(SUM(minutos_conectados) / 60, 2) AS total_horas
+FROM horas_por_franja
+GROUP BY fecha, usuario
+ORDER BY usuario;
+
+-- ver vista horas por franja --
+select * from vista_total_por_empleado;

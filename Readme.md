@@ -180,3 +180,14 @@ Obtener un resumen total de horas conectadas por franja de 30 minutos y por día
 
 🧾 Ejemplo de ejecución:
 select * from vista_total_horas_por_franja;
+
+👁️ Vista: vista_total_por_empleado
+Agrupa los datos de la tabla horas_por_franja por fecha y usuario, sumando los minutos conectados y convirtiéndolos a horas.
+
+📋 Tablas involucradas:
+horas_por_franja: contiene los minutos conectados por usuario, servicio, fecha y franja.
+🎯 Objetivo:
+Obtener un resumen total de horas conectadas por empleado y por día, útil para analizar el presentismo y la carga de trabajo individual.
+
+🧾 Ejemplo de ejecución:
+select * from vista_total_horas_por_franja;
