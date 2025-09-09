@@ -241,4 +241,6 @@ BEGIN
     CLOSE cur;
 END$$
 
-DELIMITER ;
+DELIMITER 
+-- muestra el resultado del store procedure --
+CALL sp_generar_horas_por_franja();
