@@ -164,6 +164,6 @@ Para cada franja:
 Calcula los minutos conectados por usuario y servicio.
 Inserta los datos en horas_por_franja.
 Si no hubo conexión, inserta el registro con 0 minutos.
-🧾 Ejemplo de ejecución:
 
+🧾 Ejemplo de ejecución:
 CALL sp_generar_horas_por_franja();
