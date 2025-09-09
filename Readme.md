@@ -191,3 +191,6 @@ Obtener un resumen total de horas conectadas por empleado y por día, útil para
 
 🧾 Ejemplo de ejecución:
 select * from vista_total_horas_por_franja;
+
+
+NOTAS: Faltan realizar vistas y store procedure que no se realizaron por falta de tiempo. En la entrega final estara todo ya incorporado.
