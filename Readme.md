@@ -167,3 +167,13 @@ Si no hubo conexión, inserta el registro con 0 minutos.
 
 🧾 Ejemplo de ejecución:
 CALL sp_generar_horas_por_franja();
+
+## 👁️ Vistas
+
+👁️ Vista: vista_total_horas_por_franja
+Agrupa los datos de la tabla horas_por_franja por fecha y franja horaria, sumando los minutos conectados por todos los usuarios y servicios, y convirtiéndolos a horas.
+
+📋 Tablas involucradas:
+horas_por_franja: contiene los minutos conectados por usuario, servicio, fecha y franja.
+🎯 Objetivo:
+Obtener un resumen total de horas conectadas por franja de 30 minutos y por día, útil para visualizar la ocupación general del call center en unidades más legibles.

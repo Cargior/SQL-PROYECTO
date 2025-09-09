@@ -159,6 +159,8 @@ VALUES
 (23912,'u405404','ACTIVO ON SITE','2025-07-03','2025-07-03','16:00:00','22:00:00','Domingo','Miércoles','RETENCION CABLE','lgrios@cat-technologies.com');
 -- carga de tabla conexiones al sistema --
 -- Se adjunta CVS en GITHUB--
+-- carga de tabla requerido --
+-- Se adjunta CVS en GITHUB--
 
 -- crea tabla horas por franja --
 CREATE TABLE horas_por_franja (
