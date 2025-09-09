@@ -23,7 +23,7 @@ Este esquema gestiona información de empleados, sus conexiones al sistema, ause
 
 ---
 
-🧑‍💼 Tabla: Nomina
+##🧑‍💼 Tabla: Nomina
 Contiene los datos principales de cada empleado.
 
 Columna	Tipo	Descripción
@@ -41,7 +41,7 @@ mail	VARCHAR(100)	Correo electrónico
 🔗 FK: servicio → Servicios(servicio)
 📌 Índices: usuario (UNIQUE), servicio
 
-🧾 Tabla: Servicios
+##🧾 Tabla: Servicios
 Define los servicios disponibles en la organización.
 
 Columna	Tipo	Descripción
@@ -59,7 +59,7 @@ servicio	VARCHAR(100)	Servicio desde el que se conecta
 🔗 FK: usuario → Nomina(usuario)
 📌 Índices: usuario, conexion, servicio
 
-📆 Tabla: Justificados
+##📆 Tabla: Justificados
 Registra ausencias justificadas por empleado.
 
 Columna	Tipo	Descripción
@@ -70,7 +70,7 @@ Motivo_Ausencia	VARCHAR(100)	Motivo del justificativo
 🔗 FK: Legajo → Nomina(Legajo)
 📌 Índices: Legajo, Fecha, Motivo_Ausencia
 
-📋 Tabla: Planificado
+##📋 Tabla: Planificado
 Define la planificación de personal por servicio y franja horaria.
 
 Columna	Tipo	Descripción
@@ -82,7 +82,7 @@ CANTIDAD_DE_PERSONAS	INT	Cantidad de personas requeridas
 🔑 PK compuesta: FECHA, FRANJA_HORARIA, SERVICIO
 📌 Índices: FECHA, SERVICIO
 
-📌 Tabla: Requerido
+##📌 Tabla: Requerido
 Define los requerimientos reales por servicio y franja horaria.
 
 Columna	Tipo	Descripción
@@ -94,7 +94,7 @@ CANTIDAD_DE_PERSONAS	INT	Cantidad de personas necesarias
 🔑 PK compuesta: FECHA, FRANJA_HORARIA, SERVICIO
 📌 Índices: FECHA, SERVICIO
 
-🏢 Tabla: lay_out
+##🏢 Tabla: lay_out
 Define características adicionales por servicio.
 
 Columna	Tipo	Descripción
