@@ -83,12 +83,26 @@ CREATE TABLE lay_out (
     PISO VARCHAR(50),
     Q__PA_ASIGNADAS INT,
     FOREIGN KEY (SERVICIO) REFERENCES Servicios(servicio)
+-- tabla horas_por_franja --
+CREATE TABLE horas_por_franja (
+    usuario VARCHAR(10) NOT NULL,
+    servicio VARCHAR(100) NOT NULL, -- FK → Servicios(servicio)
+    fecha DATE NOT NULL,
+    franja_inicio DATETIME NOT NULL,
+    franja_fin DATETIME NOT NULL,
+    minutos_conectados INT DEFAULT 0,
+    CONSTRAINT PK_horas_por_franja PRIMARY KEY (usuario, fecha, franja_inicio, servicio)
+);
+
+
     
     -- insertar valores servicio --
 
 
 INSERT INTO Servicios (servicio)
 VALUES ('RETENCION CABLE');
+
+
 
 -- insertar valores nomina --
 
@@ -145,3 +159,86 @@ VALUES
 (23912,'u405404','ACTIVO ON SITE','2025-07-03','2025-07-03','16:00:00','22:00:00','Domingo','Miércoles','RETENCION CABLE','lgrios@cat-technologies.com');
 -- carga de tabla conexiones al sistema --
 -- Se adjunta CVS en GITHUB--
+
+-- crea tabla horas por franja --
+CREATE TABLE horas_por_franja (
+    usuario VARCHAR(10) NOT NULL,
+    servicio VARCHAR(100) NOT NULL, -- FK → Servicios(servicio)
+    fecha DATE NOT NULL,
+    franja_inicio DATETIME NOT NULL,
+    franja_fin DATETIME NOT NULL,
+    minutos_conectados INT DEFAULT 0,
+    CONSTRAINT PK_horas_por_franja PRIMARY KEY (usuario, fecha, franja_inicio, servicio)
+);
+
+-- crea el store procedure para dividir por franjas las conexiones trayendo el servicio por usuario--
+DELIMITER $$
+
+CREATE PROCEDURE sp_generar_horas_por_franja()
+BEGIN
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE fecha_actual DATE;
+
+    DECLARE cur CURSOR FOR
+        SELECT DISTINCT DATE(conexion) FROM Conexiones_al_sistema;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    OPEN cur;
+
+    read_loop: LOOP
+        FETCH cur INTO fecha_actual;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+
+        SET @franja_inicio = CONCAT(fecha_actual, ' 00:00:00');
+        WHILE @franja_inicio < CONCAT(DATE_ADD(fecha_actual, INTERVAL 1 DAY), ' 00:00:00') DO
+            SET @franja_fin = DATE_ADD(@franja_inicio, INTERVAL 30 MINUTE);
+
+            -- Insertar minutos conectados
+            INSERT INTO horas_por_franja (usuario, servicio, fecha, franja_inicio, franja_fin, minutos_conectados)
+            SELECT
+                n.usuario,
+                n.servicio,
+                fecha_actual,
+                @franja_inicio,
+                @franja_fin,
+                SUM(
+                    TIMESTAMPDIFF(
+                        MINUTE,
+                        GREATEST(c.conexion, @franja_inicio),
+                        LEAST(c.desconexion, @franja_fin)
+                    )
+                ) AS minutos_conectados
+            FROM Conexiones_al_sistema c
+            JOIN Nomina n ON c.usuario = n.usuario
+            WHERE c.conexion < @franja_fin AND c.desconexion > @franja_inicio
+            GROUP BY n.usuario, n.servicio;
+
+            -- Insertar 0 minutos si no hubo conexión
+            INSERT INTO horas_por_franja (usuario, servicio, fecha, franja_inicio, franja_fin, minutos_conectados)
+            SELECT
+                n.usuario,
+                n.servicio,
+                fecha_actual,
+                @franja_inicio,
+                @franja_fin,
+                0
+            FROM Nomina n
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM Conexiones_al_sistema c
+                WHERE c.usuario = n.usuario
+                  AND c.conexion < @franja_fin
+                  AND c.desconexion > @franja_inicio
+            );
+
+            SET @franja_inicio = @franja_fin;
+        END WHILE;
+    END LOOP;
+
+    CLOSE cur;
+END$$
+
+DELIMITER ;
