@@ -249,6 +249,16 @@ Obtener un resumen total de horas conectadas por empleado y por día, útil para
 🧾 Ejemplo de ejecución:
 select * from vista_total_horas_por_franja;
 
+👁️ Vista: vista_cumplimiento_vs_requerido_detallada
+Agrupa los datos de la tabla horas_por_franja por fecha, franja horaria y servicio, sumando los minutos conectados por todos los usuarios, y los compara con la cantidad de personas requeridas en la tabla Requerido.
+
+📋 Tablas involucradas:
+horas_por_franja: contiene los minutos conectados por usuario, servicio, fecha y franja.
+Requerido: define la cantidad de personas necesarias por servicio y franja horaria.
+
+🎯 Objetivo:
+Obtener el nivel de cumplimiento por franja horaria, comparando la cantidad de minutos conectados (convertidos a posiciones equivalentes) con la cantidad de personas requeridas por servicio.
+
 ## 🔁 Trigger
 
 

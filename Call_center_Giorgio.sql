@@ -421,3 +421,34 @@ VALUES (
     'EXAM' 
 );
 
+-- Vista y funcion para el calculo del cumplimiento (horas personas conectadas dividido personas planificadas)--
+CREATE VIEW vista_cumplimiento_vs_requerido_detallada AS
+
+SELECT
+    h.fecha,
+    TIME(h.franja_inicio) AS franja_horaria,
+    h.servicio,
+    SUM(h.minutos_conectados) AS minutos_conectados_total,
+    r.CANTIDAD_DE_PERSONAS,
+    ROUND(
+        (SUM(h.minutos_conectados) / 60.0 * 2) / NULLIF(r.CANTIDAD_DE_PERSONAS, 0),
+        2
+    ) AS cumplimiento
+FROM
+    horas_por_franja h
+JOIN
+    Requerido r
+    ON h.fecha = r.FECHA
+    AND TIME(h.franja_inicio) = r.FRANJA_HORARIA
+    AND h.servicio = r.SERVICIO
+GROUP BY
+    h.fecha,
+    TIME(h.franja_inicio),
+    h.servicio,
+    r.CANTIDAD_DE_PERSONAS;
+
+
+
+
+-- ver vista --
+select * from vista_cumplimiento_vs_requerido_detallada;
