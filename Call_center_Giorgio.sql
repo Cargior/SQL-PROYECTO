@@ -107,19 +107,9 @@ CREATE TABLE lay_out (
     PISO VARCHAR(50),
     Q__PA_ASIGNADAS INT,
     FOREIGN KEY (SERVICIO) REFERENCES Servicios(servicio)
--- tabla horas_por_franja --
-CREATE TABLE horas_por_franja (
-    usuario VARCHAR(10) NOT NULL,
-    servicio VARCHAR(100) NOT NULL, -- FK → Servicios(servicio)
-    fecha DATE NOT NULL,
-    franja_inicio DATETIME NOT NULL,
-    franja_fin DATETIME NOT NULL,
-    minutos_conectados INT DEFAULT 0,
-    CONSTRAINT PK_horas_por_franja PRIMARY KEY (usuario, fecha, franja_inicio, servicio)
+
 );
-
-
-    
+  
     -- insertar valores servicio --
 
 

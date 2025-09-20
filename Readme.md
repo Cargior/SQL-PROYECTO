@@ -249,5 +249,13 @@ Obtener un resumen total de horas conectadas por empleado y por día, útil para
 🧾 Ejemplo de ejecución:
 select * from vista_total_horas_por_franja;
 
+## 🔁 Trigger
 
-NOTAS: Faltan realizar vistas y store procedure que no se realizaron por falta de tiempo. En la entrega final estara todo ya incorporado.
+
+🔁 Trigger: tr_insertar_en_horas_por_franja
+Este trigger se ejecuta automáticamente después de insertar una nueva conexión en la tabla Conexiones_al_sistema, y llama al procedimiento anterior para registrar las franjas correspondientes.
+
+📦 Lógica:
+
+Se activa con cada INSERT en Conexiones_al_sistema.
+Llama a sp_generar_horas_por_franja_para_conexion pasando los datos de la nueva conexión
