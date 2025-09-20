@@ -388,7 +388,7 @@ END$$
 DELIMITER ;
 
 -- ejemplo para disparar el tigger --
--- insertar archivo de conexiones_2--
+-- insertar archivo de conexiones_2 de GITHUB--
 
 -- tigger para validad cargar de justificado --
 
