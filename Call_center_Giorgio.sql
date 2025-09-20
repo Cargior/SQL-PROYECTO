@@ -296,3 +296,111 @@ ORDER BY usuario;
 
 -- ver vista horas por franja --
 select * from vista_total_por_empleado;
+
+
+-- Carga de un certificado --
+
+INSERT INTO Justificados (id, Legajo, Fecha, codigo_motivo)
+VALUES (1, 22622, '2025-09-02', 'ENF'); -- 'ENF' sería el código en Motivos_certificados
+
+
+-- store procedure para estandarizar la carga de justificados --
+DELIMITER $$
+
+CREATE PROCEDURE sp_insertar_justificacion_con_usuario (
+    IN p_legajo INT,
+    IN p_fecha DATE,
+    IN p_codigo_motivo VARCHAR(10),
+    IN p_usuario_carga VARCHAR(50)
+)
+BEGIN
+    DECLARE v_exists_legajo INT;
+    DECLARE v_exists_motivo INT;
+    DECLARE v_penalidad BOOLEAN;
+    DECLARE v_documentacion BOOLEAN;
+
+    -- Validar existencia del legajo
+    SELECT COUNT(*) INTO v_exists_legajo
+    FROM Nomina
+    WHERE Legajo = p_legajo;
+
+    -- Validar existencia del motivo
+    SELECT COUNT(*) INTO v_exists_motivo
+    FROM Motivos_certificados
+    WHERE codigo = p_codigo_motivo;
+
+    -- Si ambos existen, continuar
+    IF v_exists_legajo > 0 AND v_exists_motivo > 0 THEN
+
+        -- Obtener atributos del motivo
+        SELECT penalidad, requiere_documentacion
+        INTO v_penalidad, v_documentacion
+        FROM Motivos_certificados
+        WHERE codigo = p_codigo_motivo;
+
+        -- Insertar justificación
+        INSERT INTO Justificados (Legajo, Fecha, codigo_motivo, usuario_carga)
+        VALUES (p_legajo, p_fecha, p_codigo_motivo, p_usuario_carga);
+
+        -- Mostrar mensaje
+        SELECT CONCAT(
+            'Justificación registrada por ', p_usuario_carga,
+            '. Penalidad: ', IF(v_penalidad, 'Sí', 'No'),
+            '. Requiere documentación: ', IF(v_documentacion, 'Sí', 'No'),
+            '.'
+        ) AS mensaje_resultado;
+
+    ELSE
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Error: Legajo o motivo no válido.';
+    END IF;
+END $$
+
+DELIMITER ;
+
+
+-- modifica la tabla justificados para cargar el usuario que realiza la carga --
+	ALTER TABLE Justificados ADD COLUMN usuario_carga VARCHAR(50);
+
+-- ejecuta carga ejemplo --
+CALL sp_insertar_justificacion_con_usuario('22853', '2025-09-07', 'DE', 'csgiorgio');
+
+-- sotore procedure para presentismo --
+DELIMITER $$
+
+CREATE PROCEDURE sp_estado_presentismo_por_fecha (
+    IN p_fecha DATE
+)
+BEGIN
+    SELECT 
+        n.Legajo,
+        n.usuario,
+        n.servicio,
+        COALESCE(
+            CASE 
+                WHEN c.usuario IS NOT NULL THEN 'Conectado'
+                WHEN j.codigo_motivo IS NOT NULL THEN mc.descripcion
+                ELSE 'AI'
+            END,
+            'AI'
+        ) AS estado,
+        c.conexion,
+        c.desconexion,
+        j.Fecha AS fecha_justificada,
+        j.codigo_motivo,
+        j.usuario_carga
+    FROM Nomina n
+    LEFT JOIN (
+        SELECT usuario, MIN(conexion) AS conexion, MAX(desconexion) AS desconexion
+        FROM Conexiones_al_sistema
+        WHERE DATE(conexion) = p_fecha
+        GROUP BY usuario
+    ) c ON n.usuario = c.usuario
+    LEFT JOIN Justificados j ON n.Legajo = j.Legajo AND j.Fecha = p_fecha
+    LEFT JOIN Motivos_certificados mc ON j.codigo_motivo = mc.codigo;
+END $$
+
+DELIMITER ;
+
+-- ejecución --
+CALL sp_estado_presentismo_por_fecha('2025-09-07');

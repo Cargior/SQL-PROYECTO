@@ -182,6 +182,49 @@ Si no hubo conexión, inserta el registro con 0 minutos.
 🧾 Ejemplo de ejecución:
 CALL sp_generar_horas_por_franja();
 
+⚙️ Procedimiento Almacenado: sp_insertar_justificacion_con_usuario
+Este procedimiento registra una ausencia justificada para un empleado, validando que el legajo y el motivo existan, y registrando quién hizo la carga.
+
+📋 Tablas involucradas:
+
+Nomina: valida que el legajo exista.
+Motivos_certificados: valida el motivo y obtiene si tiene penalidad o requiere documentación.
+Justificados: guarda la justificación con el usuario que la cargó.
+🎯 Objetivo: Registrar una ausencia justificada con control de integridad y trazabilidad del usuario que realiza la carga.
+
+🧠 Lógica:
+
+Verifica que el legajo exista.
+Verifica que el motivo exista.
+Obtiene si el motivo tiene penalidad y si requiere documentación.
+Inserta la justificación en la tabla Justificados.
+Devuelve un mensaje con esa información.
+
+
+⚙️ Procedimiento Almacenado: sp_estado_presentismo_por_fecha
+Este procedimiento genera un resumen del estado de presentismo por fecha, indicando si cada usuario estuvo conectado, justificado o ausente injustificado (AI).
+
+📋 Tablas involucradas:
+
+Nomina: lista de empleados.
+Conexiones_al_sistema: registros de conexión.
+Justificados: ausencias justificadas.
+Motivos_certificados: descripción del motivo.
+estado_presentismo_resumen: tabla destino del resumen.
+🎯 Objetivo: Generar un resumen por usuario y fecha que indique su estado: conectado, justificado (con descripción del motivo), o AI si no tiene registros.
+
+🧠 Lógica:
+
+Elimina registros previos de esa fecha en la tabla resumen.
+Recorre todos los usuarios.
+Verifica si tienen conexión ese día.
+Si no tienen conexión, verifica si tienen justificación.
+Si no tienen nada, los marca como AI.
+Inserta el resultado en estado_presentismo_resumen.
+🧾 Ejemplo de ejecución:
+CALL sp_estado_presentismo_por_fecha('2025-09-07');
+
+
 ## 👁️ Vistas
 
 👁️ Vista: vista_total_horas_por_franja
