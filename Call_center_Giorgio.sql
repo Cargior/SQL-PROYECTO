@@ -452,3 +452,24 @@ GROUP BY
 
 -- ver vista --
 select * from vista_cumplimiento_vs_requerido_detallada;
+
+-- vista ausentismo por motivo--
+CREATE VIEW vista_ausentismo_por_motivo AS
+SELECT
+    j.Fecha,
+    m.descripcion AS motivo,
+    COUNT(j.Legajo) AS cantidad_ausentes,
+    m.penalidad,
+    m.requiere_documentacion
+FROM
+    Justificados j
+JOIN
+    Motivos_certificados m ON j.codigo_motivo = m.codigo
+GROUP BY
+    j.Fecha,
+    m.descripcion,
+    m.penalidad,
+    m.requiere_documentacion;
+-- ver vista --
+select * from vista_ausentismo_por_motivo;
+

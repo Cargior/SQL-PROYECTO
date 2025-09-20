@@ -238,17 +238,6 @@ Obtener un resumen total de horas conectadas por franja de 30 minutos y por día
 🧾 Ejemplo de ejecución:
 select * from vista_total_horas_por_franja;
 
-👁️ Vista: vista_total_por_empleado
-Agrupa los datos de la tabla horas_por_franja por fecha y usuario, sumando los minutos conectados y convirtiéndolos a horas.
-
-📋 Tablas involucradas:
-horas_por_franja: contiene los minutos conectados por usuario, servicio, fecha y franja.
-🎯 Objetivo:
-Obtener un resumen total de horas conectadas por empleado y por día, útil para analizar el presentismo y la carga de trabajo individual.
-
-🧾 Ejemplo de ejecución:
-select * from vista_total_horas_por_franja;
-
 👁️ Vista: vista_cumplimiento_vs_requerido_detallada
 Agrupa los datos de la tabla horas_por_franja por fecha, franja horaria y servicio, sumando los minutos conectados por todos los usuarios, y los compara con la cantidad de personas requeridas en la tabla Requerido.
 
@@ -261,6 +250,20 @@ Obtener el nivel de cumplimiento por franja horaria, comparando la cantidad de m
 
 🧾 Ejemplo de ejecución:
 select * from vista_cumplimiento_vs_requerido_detallada;
+
+👁️ Vista: vista_ausentismo_por_motivo
+Agrupa las ausencias justificadas por fecha y motivo, mostrando cuántos empleados estuvieron ausentes por cada causa, e indicando si el motivo implica penalidad o requiere documentación.
+
+📂 Tablas involucradas:
+Justificados: contiene los registros de ausencias justificadas por legajo y fecha.
+Motivos_certificados: define los motivos válidos, si aplican penalidad y si requieren documentación.
+
+🎯 Objetivo:
+Obtener un resumen del ausentismo por motivo y fecha, útil para análisis de RRHH, planificación y control de presentismo.
+
+🧾 Ejemplo de ejecución:
+select * from vista_ausentismo_por_motivo;
+
 
 ## 🔁 Trigger
 
