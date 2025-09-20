@@ -264,6 +264,17 @@ Obtener un resumen del ausentismo por motivo y fecha, útil para análisis de RR
 🧾 Ejemplo de ejecución:
 select * from vista_ausentismo_por_motivo;
 
+👁️ Vista: vista_presentismo_diario_por_servicio
+Agrupa los datos de la tabla horas_por_franja por fecha y servicio, mostrando cuántos empleados estuvieron conectados en total y cuántas horas acumularon.
+
+📂 Tablas involucradas:
+horas_por_franja: contiene los minutos conectados por usuario, servicio, fecha y franja.
+
+🎯 Objetivo:
+Obtener un resumen diario del presentismo operativo por servicio, útil para analizar la carga laboral, validar la planificación y detectar desvíos.
+
+🧾 Ejemplo de ejecución:
+select * from vista_presentismo_diario_por_servicio;
 
 ## 🔁 Trigger
 
@@ -289,3 +300,8 @@ Si existe, bloquea la inserción y lanza un mensaje de error.
 📊 funcion aplicada en vista_cumplimiento_vs_requerido_detallada
 
 cumplimiento=((minutos totales/60)×2)/personas requeridas
+
+📊 funcion aplicada en vista_presentismo_diario_por_servicio
+
+SUM(h.minutos_conectados)/60 para saber el total de horas conectados por día
+COUNT(DISTINCT h.usuario) para saber el total de personas conectadas por día.

@@ -472,4 +472,18 @@ GROUP BY
     m.requiere_documentacion;
 -- ver vista --
 select * from vista_ausentismo_por_motivo;
-
+-- Presentismo --
+CREATE VIEW vista_presentismo_diario_por_servicio AS
+SELECT
+    h.fecha,
+    h.servicio,
+    COUNT(DISTINCT h.usuario) AS personas_conectadas,
+    SUM(h.minutos_conectados) AS minutos_totales,
+    ROUND(SUM(h.minutos_conectados) / 60.0, 2) AS horas_totales
+FROM
+    horas_por_franja h
+GROUP BY
+    h.fecha,
+    h.servicio;
+-- ver vista --
+select * from vista_presentismo_diario_por_servicio;
