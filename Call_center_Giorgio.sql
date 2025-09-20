@@ -389,3 +389,35 @@ DELIMITER ;
 
 -- ejemplo para disparar el tigger --
 -- insertar archivo de conexiones_2--
+
+-- tigger para validad cargar de justificado --
+
+DELIMITER $$
+
+CREATE TRIGGER tr_validar_justificacion
+BEFORE INSERT ON Justificados
+FOR EACH ROW
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM Justificados
+        WHERE Legajo = NEW.Legajo AND Fecha = NEW.Fecha
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Ya existe una justificación para ese legajo y fecha.';
+    END IF;
+END$$
+
+DELIMITER ;
+ -- ejemplo carga duplicada de justificado --
+ INSERT INTO Justificados (
+    Legajo,
+    Fecha,
+    codigo_motivo
+)
+VALUES (
+    22853,
+    '2025-09-07',
+    'EXAM' 
+);
+

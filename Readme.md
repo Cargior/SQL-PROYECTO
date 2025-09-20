@@ -259,3 +259,11 @@ Este trigger se ejecuta automáticamente después de insertar una nueva conexió
 
 Se activa con cada INSERT en Conexiones_al_sistema.
 Llama a sp_generar_horas_por_franja_para_conexion pasando los datos de la nueva conexión
+
+ Trigger: tr_validar_justificacion
+Este trigger se ejecuta antes de insertar una nueva justificación en la tabla Justificados, y evita duplicados por legajo y fecha.
+
+📦 Lógica:
+
+Verifica si ya existe una justificación para el mismo legajo y fecha.
+Si existe, bloquea la inserción y lanza un mensaje de error.
