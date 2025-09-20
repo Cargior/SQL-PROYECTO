@@ -259,6 +259,9 @@ Requerido: define la cantidad de personas necesarias por servicio y franja horar
 🎯 Objetivo:
 Obtener el nivel de cumplimiento por franja horaria, comparando la cantidad de minutos conectados (convertidos a posiciones equivalentes) con la cantidad de personas requeridas por servicio.
 
+🧾 Ejemplo de ejecución:
+select * from vista_cumplimiento_vs_requerido_detallada;
+
 ## 🔁 Trigger
 
 
@@ -277,3 +280,9 @@ Este trigger se ejecuta antes de insertar una nueva justificación en la tabla J
 
 Verifica si ya existe una justificación para el mismo legajo y fecha.
 Si existe, bloquea la inserción y lanza un mensaje de error.
+
+## 📊 Funcion
+
+📊 funcion aplicada en vista_cumplimiento_vs_requerido_detallada
+
+cumplimiento=((minutos totales/60)×2)/personas requeridas
