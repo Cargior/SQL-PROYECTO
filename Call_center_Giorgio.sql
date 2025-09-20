@@ -53,6 +53,30 @@ CREATE TABLE Justificados (
     INDEX idx_motivo_justificados (Motivo_Ausencia)
 );
 
+-- Crear tabla de motivos de certificados
+CREATE TABLE Motivos_certificados (
+    codigo VARCHAR(10) PRIMARY KEY,
+    descripcion VARCHAR(100) NOT NULL,
+    penalidad BOOLEAN DEFAULT FALSE,
+    requiere_documentacion BOOLEAN DEFAULT TRUE
+);
+
+-- Modificar tabla Justificados
+-- Paso 1: Renombrar columna actual (opcional para preservar datos)
+ALTER TABLE Justificados RENAME COLUMN Motivo_Ausencia TO motivo_texto_original;
+
+-- Paso 2: Agregar nueva columna con FK
+ALTER TABLE Justificados ADD COLUMN codigo_motivo VARCHAR(10);
+ALTER TABLE Justificados ADD CONSTRAINT fk_codigo_motivo FOREIGN KEY (codigo_motivo) REFERENCES Motivos_certificados(codigo);
+
+-- Carga de motivos de justificados --
+INSERT INTO Motivos_certificados (codigo, descripcion, penalidad, requiere_documentacion) VALUES
+('ENF', 'Enfermedad', FALSE, TRUE),
+('EF', 'Familiar enfermo', FALSE, TRUE),
+('DE', 'Día de examen', TRUE, FALSE),
+('VAC', 'Vacaciones', FALSE, FALSE),
+('TRN', 'Trámite', TRUE, FALSE);
+
 -- Tabla: Planificado --
 CREATE TABLE Planificado (
     FECHA DATE,

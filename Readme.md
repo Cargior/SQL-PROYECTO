@@ -86,6 +86,20 @@ Registra ausencias justificadas por empleado.
 
 ---
 
+## 🧾 Tabla: Motivos_certificados
+Define los motivos válidos para justificar ausencias, incluyendo si aplican penalidad y si requieren documentación.
+
+| Columna                | Tipo         | Descripción                                      |
+|------------------------|--------------|--------------------------------------------------|
+| `codigo`               | VARCHAR(10)  | Código único del motivo (**PK**)                 |
+| `descripcion`          | VARCHAR(100) | Descripción legible del motivo                   |
+| `penalidad`            | BOOLEAN      | Indica si el motivo implica penalización         |
+| `requiere_documentacion` | BOOLEAN    | Indica si requiere documentación justificativa   |
+
+🔗 **FK utilizada en**: `Justificados(codigo_motivo)`  
+🛠️ **Reemplaza** el campo `Motivo_Ausencia` por una clave foránea hacia esta tabla.
+
+
 ## 📋 Tabla: Planificado
 Define la planificación de personal por servicio y franja horaria.
 
