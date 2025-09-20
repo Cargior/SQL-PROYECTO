@@ -190,74 +190,51 @@ CREATE TABLE horas_por_franja (
 -- crea el store procedure para dividir por franjas las conexiones trayendo el servicio por usuario--
 DELIMITER $$
 
-CREATE PROCEDURE sp_generar_horas_por_franja()
+CREATE PROCEDURE sp_generar_horas_por_franja_para_conexion (
+    IN p_usuario VARCHAR(10),
+    IN p_conexion DATETIME,
+    IN p_desconexion DATETIME
+)
 BEGIN
-    DECLARE done INT DEFAULT FALSE;
-    DECLARE fecha_actual DATE;
+    DECLARE franja_inicio DATETIME;
+    DECLARE franja_fin DATETIME;
+    DECLARE minutos INT;
 
-    DECLARE cur CURSOR FOR
-        SELECT DISTINCT DATE(conexion) FROM Conexiones_al_sistema;
+    SET franja_inicio = DATE_FORMAT(p_conexion, '%Y-%m-%d %H:00:00');
 
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+    WHILE franja_inicio < p_desconexion DO
+        SET franja_fin = DATE_ADD(franja_inicio, INTERVAL 30 MINUTE);
 
-    OPEN cur;
+        SET minutos = 
+            CASE
+                WHEN p_desconexion <= franja_inicio THEN 0
+                WHEN p_conexion >= franja_fin THEN 0
+                ELSE TIMESTAMPDIFF(
+                    MINUTE,
+                    GREATEST(p_conexion, franja_inicio),
+                    LEAST(p_desconexion, franja_fin)
+                )
+            END;
 
-    read_loop: LOOP
-        FETCH cur INTO fecha_actual;
-        IF done THEN
-            LEAVE read_loop;
-        END IF;
+        INSERT INTO horas_por_franja (
+            usuario, servicio, fecha, franja_inicio, franja_fin, minutos_conectados
+        )
+        SELECT
+            p_usuario,
+            servicio,
+            DATE(p_conexion),
+            franja_inicio,
+            franja_fin,
+            minutos
+        FROM Nomina
+        WHERE usuario = p_usuario;
 
-        SET @franja_inicio = CONCAT(fecha_actual, ' 00:00:00');
-        WHILE @franja_inicio < CONCAT(DATE_ADD(fecha_actual, INTERVAL 1 DAY), ' 00:00:00') DO
-            SET @franja_fin = DATE_ADD(@franja_inicio, INTERVAL 30 MINUTE);
-
-            -- Insertar minutos conectados
-            INSERT INTO horas_por_franja (usuario, servicio, fecha, franja_inicio, franja_fin, minutos_conectados)
-            SELECT
-                n.usuario,
-                n.servicio,
-                fecha_actual,
-                @franja_inicio,
-                @franja_fin,
-                SUM(
-                    TIMESTAMPDIFF(
-                        MINUTE,
-                        GREATEST(c.conexion, @franja_inicio),
-                        LEAST(c.desconexion, @franja_fin)
-                    )
-                ) AS minutos_conectados
-            FROM Conexiones_al_sistema c
-            JOIN Nomina n ON c.usuario = n.usuario
-            WHERE c.conexion < @franja_fin AND c.desconexion > @franja_inicio
-            GROUP BY n.usuario, n.servicio;
-
-            -- Insertar 0 minutos si no hubo conexión
-            INSERT INTO horas_por_franja (usuario, servicio, fecha, franja_inicio, franja_fin, minutos_conectados)
-            SELECT
-                n.usuario,
-                n.servicio,
-                fecha_actual,
-                @franja_inicio,
-                @franja_fin,
-                0
-            FROM Nomina n
-            WHERE NOT EXISTS (
-                SELECT 1
-                FROM Conexiones_al_sistema c
-                WHERE c.usuario = n.usuario
-                  AND c.conexion < @franja_fin
-                  AND c.desconexion > @franja_inicio
-            );
-
-            SET @franja_inicio = @franja_fin;
-        END WHILE;
-    END LOOP;
-
-    CLOSE cur;
+        SET franja_inicio = franja_fin;
+    END WHILE;
 END$$
 
-DELIMITER 
+DELIMITER ;
+
 -- muestra el resultado del store procedure --
 CALL sp_generar_horas_por_franja();
 
@@ -394,3 +371,21 @@ DELIMITER ;
 
 -- ejecución --
 CALL sp_estado_presentismo_por_fecha('2025-09-07');
+-- tigger para agregar conexiones a la tabla horas por franjas --
+DELIMITER $$
+
+CREATE TRIGGER tr_insertar_en_horas_por_franja
+AFTER INSERT ON Conexiones_al_sistema
+FOR EACH ROW
+BEGIN
+    CALL sp_generar_horas_por_franja_para_conexion(
+        NEW.usuario,
+        NEW.conexion,
+        NEW.desconexion
+    );
+END$$
+
+DELIMITER ;
+
+-- ejemplo para disparar el tigger --
+-- insertar archivo de conexiones_2--
